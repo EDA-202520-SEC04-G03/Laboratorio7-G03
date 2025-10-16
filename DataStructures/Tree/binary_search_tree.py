@@ -32,3 +32,13 @@ def get_node(root, key):
 
 def get(my_bst, key):
     return get_node(my_bst["root"], key)
+
+
+def size_tree(root):
+    if root is None:
+        return 0
+    return 1 + size_tree(root["left"]) + size_tree(root["right"])
+
+def size(my_bst):
+    return size_tree(my_bst["root"])
+
