@@ -8,6 +8,7 @@ def new_map():
 def insert_node(root, key, value):
     if root is None:
         return bst.new_node(key, value)
+    
     if key < root["left"]["key"]:
         root["left"] = insert_node(root["left"], key, value)
     elif key > root["right"]["key"]:
@@ -15,3 +16,6 @@ def insert_node(root, key, value):
     else:
         root["value"] = value
     return root
+
+def put(my_bst, key , value):
+    my_bst["root"] = insert_node(my_bst["root"],key,value)
