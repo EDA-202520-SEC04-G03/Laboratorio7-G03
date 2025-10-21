@@ -27,7 +27,9 @@
 import os
 import csv
 import datetime
-
+import DataStructures.binary_search_tree as bst
+import DataStructures.arraylist as al
+import DataStructures.linear_probing as lp
 # TODO Realice la importación del Árbol Binario Ordenado
 # TODO Realice la importación de ArrayList (al) como estructura de datos auxiliar para sus requerimientos
 # TODO Realice la importación de LinearProbing (lp) como estructura de datos auxiliar para sus requerimientos
@@ -51,10 +53,13 @@ def new_logic():
                 }
 
     analyzer['crimes'] = al.new_list()
-    # TODO completar la creación del mapa ordenado
-    analyzer['dateIndex'] = None
+    
+    # Crear el mapa ordenado con el BST
+    analyzer['dateIndex'] = bst.new_map()
     
     return analyzer
+
+    
 
 # Funciones para realizar la carga
 
@@ -94,10 +99,13 @@ def update_date_index(map, crime):
     """
     occurreddate = crime['OCCURRED_ON_DATE']
     crimedate = datetime.datetime.strptime(occurreddate, '%Y-%m-%d %H:%M:%S')
+    the_date = crimedate.date()
     entry = bst.get(map, crimedate.date())
     if entry is None:
-        # TODO Realizar el caso en el que no se encuentra la fecha
-        pass
+        datentry = new_data_entry(crime)
+        # Insertar la nueva entrada en el BST
+        map = bst.put(map, the_date, datentry)
+        
     else:
         datentry = entry
     add_date_index(datentry, crime)
@@ -163,16 +171,14 @@ def index_height(analyzer):
     """
     Altura del arbol
     """
-    # TODO Completar la función de consulta de altura del árbol
-    pass
+    return bst.height(analyzer['dateIndex'])
 
 
 def index_size(analyzer):
     """
     Numero de elementos en el indice
     """
-    # TODO Completar la función de consulta de tamaño del árbol
-    pass
+    return bst.size(analyzer['dateIndex'])
 
 
 def min_key(analyzer):
