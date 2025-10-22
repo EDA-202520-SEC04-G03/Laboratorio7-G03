@@ -1,4 +1,5 @@
 import DataStructures.Tree.bst_node as bst
+import DataStructures.List.single_linked_list as ll
 
 
 def new_map():
@@ -113,3 +114,24 @@ def delete_max_tree(root):
 def delete_max(my_bst):
     my_bst["root"] = delete_max_tree(my_bst["root"])
     return my_bst
+
+def key_set_tree(root, key_list):
+    
+    if root is not None:
+        
+        key_set_tree(root["left"], key_list)
+         
+        ll.add_last(key_list, root["key"])
+
+        key_set_tree(root["right"], key_list)
+
+def key_set(my_bst):
+    
+    key_list = ll.new_list()
+
+    root = my_bst["root"]
+    
+    key_set_tree(root, key_list)
+    
+    return key_list
+
