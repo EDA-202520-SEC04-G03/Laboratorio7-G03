@@ -86,3 +86,30 @@ def height_tree(root):
 
 def height(my_bst):
     return height_tree(my_bst["root"])
+
+def delete_min_tree(root):
+    if root is None:
+        return None
+    if root["left"] is None:
+        return root["right"]
+    root["left"] = delete_min_tree(root["left"])
+    return root
+
+
+def delete_min(my_bst):
+    my_bst["root"] = delete_min_tree(my_bst["root"])
+    return my_bst
+
+
+def delete_max_tree(root):
+    if root is None:
+        return None
+    if root["right"] is None:
+        return root["left"]
+    root["right"] = delete_max_tree(root["right"])
+    return root
+
+
+def delete_max(my_bst):
+    my_bst["root"] = delete_max_tree(my_bst["root"])
+    return my_bst
