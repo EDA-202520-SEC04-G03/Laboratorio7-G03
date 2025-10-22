@@ -27,9 +27,9 @@
 import os
 import csv
 import datetime
-import DataStructures.binary_search_tree as bst
-import DataStructures.arraylist as al
-import DataStructures.linear_probing as lp
+import DataStructures.Tree.binary_search_tree as bst
+import DataStructures.List.array_list as al
+import DataStructures.Map.map_linear_probing as lp
 # TODO Realice la importación del Árbol Binario Ordenado
 # TODO Realice la importación de ArrayList (al) como estructura de datos auxiliar para sus requerimientos
 # TODO Realice la importación de LinearProbing (lp) como estructura de datos auxiliar para sus requerimientos
@@ -185,24 +185,32 @@ def min_key(analyzer):
     """
     Llave mas pequena
     """
-    # TODO Completar la función de consulta de la llave mínima
-    pass
+    return bst.get_min(analyzer['dateIndex'])
 
 
 def max_key(analyzer):
     """
     Llave mas grande
     """
-    # TODO Completar la función de consulta de la llave máxima
-    pass
+    return bst.get_max(analyzer['dateIndex'])
 
 
 def get_crimes_by_range(analyzer, initialDate, finalDate):
     """
     Retorna el numero de crimenes en un rago de fechas.
     """
-    # TODO Completar la función de consulta de crimenes por rango de fechas
-    pass
+    init_date = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
+    end_date = datetime.datetime.strptime(finalDate, '%Y-%m-%d').date()
+
+    total = 0
+    lst = analyzer['crimes']
+    size = al.size(lst)
+    for i in range(size):
+        crime = al.get_element(lst, i)
+        crimedt = datetime.datetime.strptime(crime['OCCURRED_ON_DATE'], '%Y-%m-%d %H:%M:%S').date()
+        if init_date <= crimedt <= end_date:
+            total += 1
+    return total
 
 
 def get_crimes_by_range_code(analyzer, initialDate, offensecode):
@@ -210,5 +218,17 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
     Para una fecha determinada, retorna el numero de crimenes
     de un tipo especifico.
     """
-    # TODO Completar la función de consulta de crimenes por tipo de crimen en una fecha
-    pass
+    the_date = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
+    datentry = bst.get(analyzer['dateIndex'], the_date)
+    if datentry is None:
+        return 0
+
+    lst = datentry['lstcrimes']
+    total = 0
+    size = al.size(lst)
+    for i in range(size):
+        crime = al.get_element(lst, i)
+        if crime['OFFENSE_CODE_GROUP'] == offensecode:
+            total += 1
+    return total
+
