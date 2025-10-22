@@ -135,3 +135,52 @@ def key_set(my_bst):
     
     return key_list
 
+def value_set_tree(root, value_list):
+    
+    if root is not None:
+    
+        value_set_tree(root["left"], value_list)
+
+        ll.add_last(value_list, root["value"])
+
+        value_set_tree(root["right"], value_list)
+
+def value_set(my_bst):
+    
+    value_list = ll.new_list()
+
+    root = my_bst["root"]
+    
+    value_set_tree(root, value_list)
+    
+    return value_list   
+
+def keys_range(root, key_initial, key_final, list_key):
+    if root is None:
+        return
+    if key_initial < root["key"]:
+        keys_range(root["left"], key_initial, key_final, list_key)
+    if key_initial <= root["key"] <= key_final:
+        ll.add_last(list_key, root["key"])
+    if key_final > root["key"]:
+        keys_range(root["right"], key_initial, key_final, list_key)
+
+def keys(my_bst, key_initial, key_final):
+    list_key = ll.new_list()
+    keys_range(my_bst["root"], key_initial, key_final, list_key)
+    return list_key
+
+def values_range(root, key_lo, key_hi, list_values):
+    if root is None:
+        return
+    if key_lo < root["key"]:
+        values_range(root["left"], key_lo, key_hi, list_values)
+    if key_lo <= root["key"] <= key_hi:
+        ll.add_last(list_values, root["value"])
+    if key_hi > root["key"]:
+        values_range(root["right"], key_lo, key_hi, list_values)
+
+def values(my_bst, key_initial, key_final):
+    list_values = ll.new_list()
+    values_range(my_bst["root"], key_initial, key_final, list_values)
+    return list_values
