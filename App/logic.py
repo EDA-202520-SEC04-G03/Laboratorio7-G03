@@ -112,23 +112,42 @@ def update_date_index(map, crime):
     return map
 
 
+# Se asume que 'al' y 'lp' son módulos o alias con las funciones new_list, add_last, get, y put
+
 def add_date_index(datentry, crime):
     """
-    Actualiza un indice de tipo de crimenes.  Este indice tiene una lista
+    Actualiza un indice de tipo de crimenes. Este indice tiene una lista
     de crimenes y una tabla de hash cuya llave es el tipo de crimen y
     el valor es una lista con los crimenes de dicho tipo en la fecha que
     se está consultando (dada por el nodo del arbol)
     """
     lst = datentry['lstcrimes']
     al.add_last(lst, crime)
+    
     offenseIndex = datentry['offenseIndex']
-    offentry = lp.get(offenseIndex, crime['OFFENSE_CODE_GROUP'])
-    if (offentry is None):
-        # TODO Realice el caso en el que no se encuentre el tipo de crimen
-        pass
+    offense_type = crime['OFFENSE_CODE_GROUP']
+    
+    # Intenta obtener la lista de crímenes para este tipo de ofensa (si ya existe)
+    offentry_list = lp.get(offenseIndex, offense_type)
+    
+    if (offentry_list is None):
+        # CASO 1: No se encuentra el tipo de crimen (Es la primera vez que ocurre en esta fecha)
+        
+        # 1. Crear una nueva lista de crímenes para este tipo de ofensa
+        new_list_for_offense = al.new_list() # asumiendo que al.new_list crea una lista vacía
+        
+        # 2. Agregar el crimen actual a la nueva lista
+        al.add_last(new_list_for_offense, crime)
+        
+        # 3. Insertar esta nueva lista en la tabla hash (offenseIndex)
+        lp.put(offenseIndex, offense_type, new_list_for_offense)
+        
     else:
-        # TODO Realice el caso en el que se encuentre el tipo de crimen
-        pass
+        # CASO 2: Ya se encuentra el tipo de crimen (Ya existe una lista para este tipo)
+        
+        # 1. Simplemente agregar el crimen actual al final de la lista existente
+        al.add_last(offentry_list, crime)
+        
     return datentry
 
 
