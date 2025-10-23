@@ -1,7 +1,7 @@
 import DataStructures.Map.map_functions as mf
 import DataStructures.List.array_list as lt
 import DataStructures.Map.map_entry as me
-import random
+import random as _rnd
 
 
 def new_map(num_elements, load_factor, prime=109345121):
@@ -14,8 +14,8 @@ def new_map(num_elements, load_factor, prime=109345121):
     hash_table = {
         "prime" : prime,
         "capacity" : capacity,
-        "scale" : mf.randrange(1, prime - 1),
-        "shift" : mf.randrange(0, prime - 1),
+        "scale" : _rnd.randrange(1, prime - 1),
+        "shift" : _rnd.randrange(0, prime - 1),
         "table" : table,
         "current_factor" : 0,
         "limit_factor" : load_factor,
@@ -91,8 +91,8 @@ def rehash(my_map):
 
     my_map["capacity"] = new_capacity
     my_map["prime"] = mf.next_prime(new_capacity + 1)
-    my_map["scale"] = mf.randrange(1, my_map["prime"] - 1)
-    my_map["shift"] = mf.randrange(0, my_map["prime"] - 1)
+    my_map["scale"] = _rnd.randrange(1, my_map["prime"] - 1)
+    my_map["shift"] = _rnd.randrange(0, my_map["prime"] - 1)
     my_map["table"] = new_table
     my_map["size"] = 0
 
